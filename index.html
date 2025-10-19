@@ -6,21 +6,84 @@
   <title>手机软件收录</title>
   <script src="https://cdn.jsdelivr.net/npm/lunr/lunr.min.js"></script>
   <style>
-    body { font-family: sans-serif; padding: 20px; margin:0; background:#f9f9f9; }
-    h1 { text-align:center; color:#333; }
-    .filter { text-align:center; margin:10px 0; }
-    .filter button { margin:0 5px; padding:5px 10px; cursor:pointer; }
-    #searchInput { width: 100%; padding:8px; margin:10px 0; border-radius:4px; border:1px solid #ccc; }
-    .app-list { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; }
-    .app { background:white; border-radius:8px; padding:10px; width:180px; text-align:center; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
-    .app img { width:80px; height:80px; object-fit:cover; border-radius:10px; }
-    .app a { text-decoration:none; color:#007bff; display:block; margin-top:5px; font-weight:bold; }
-    .app p { font-size: 12px; color: #555; margin-top: 5px; }
-    #searchResults div { margin:5px 0; }
-    #searchResults a { color:#007bff; text-decoration:none; font-weight:bold; }
-    .pagination { text-align:center; margin:20px 0; }
-    .pagination button { margin:0 3px; padding:5px 8px; cursor:pointer; }
-    @media(max-width:500px){ .app { width:45%; } }
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      margin: 0;
+      background: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .filter {
+      text-align: center;
+      margin: 10px 0;
+    }
+    .filter button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    #searchInput {
+      width: 100%;
+      padding: 8px;
+      margin: 10px 0;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    /* --- 列布局 --- */
+    .app-list {
+      column-count: 3; /* 默认3列，可根据屏幕自动换 */
+      column-gap: 20px;
+    }
+    @media (max-width: 900px) {
+      .app-list { column-count: 2; }
+    }
+    @media (max-width: 600px) {
+      .app-list { column-count: 1; }
+    }
+
+    .app {
+      background: white;
+      border-radius: 8px;
+      display: inline-block;
+      width: 100%;
+      margin: 0 0 15px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .app img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .app a {
+      text-decoration: none;
+      color: #007bff;
+      display: block;
+      margin-top: 5px;
+      font-weight: bold;
+    }
+    .app p {
+      font-size: 12px;
+      color: #555;
+      margin-top: 5px;
+    }
+
+    .pagination {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .pagination button {
+      margin: 0 3px;
+      padding: 5px 8px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -49,7 +112,7 @@
     let idx;
     let filteredApps = [];
     let currentPage = 1;
-    const pageSize = 6;
+    const pageSize = 15; // ✅ 每页15个
 
     fetch('apps.json')
       .then(res => res.json())
@@ -72,12 +135,11 @@
     function renderPage(page){
       const container = document.getElementById('appList');
       container.innerHTML = '';
-      const start = (page -1) * pageSize;
+      const start = (page - 1) * pageSize;
       const end = start + pageSize;
-      filteredApps.slice(start,end).forEach(app => {
+      filteredApps.slice(start, end).forEach(app => {
         const div = document.createElement('div');
         div.className = 'app';
-        div.setAttribute('data-category', app.category);
         div.innerHTML = `
           <img src="icon${app.id}.png" alt="${app.name}">
           <a href="${app.url}" target="_blank">${app.name}</a>
@@ -92,17 +154,14 @@
       const container = document.getElementById('pagination');
       container.innerHTML = '';
       const totalPages = Math.ceil(filteredApps.length / pageSize);
-
       if(totalPages <= 1) return;
 
-      // 上一页
       const prev = document.createElement('button');
       prev.innerText = '上一页';
       prev.disabled = currentPage === 1;
       prev.onclick = ()=>{ currentPage--; renderPage(currentPage); };
       container.appendChild(prev);
 
-      // 页码
       for(let i=1;i<=totalPages;i++){
         const btn = document.createElement('button');
         btn.innerText = i;
@@ -111,7 +170,6 @@
         container.appendChild(btn);
       }
 
-      // 下一页
       const next = document.createElement('button');
       next.innerText = '下一页';
       next.disabled = currentPage === totalPages;
