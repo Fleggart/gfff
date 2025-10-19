@@ -1,10 +1,10 @@
 [
   {
     "id": "1",
-    "name": "游戏1",
-    "category": "game",
-    "url": "https://example.com/app1",
-    "description": "一款好玩的游戏"
+    "name": "Android Code Studio",
+    "category": "tool",
+    "url": "https://github.com/AndroidCSOfficial/android-code-studio",
+    "description": "一个用于在 Android 设备上开发真正的基于 Gradle 的 Android 应用程序的 IDE。
   },
   {
     "id": "2",
