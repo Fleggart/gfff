@@ -12,9 +12,10 @@
     .filter button { margin:0 5px; padding:5px 10px; cursor:pointer; }
     #searchInput { width: 100%; padding:8px; margin:10px 0; border-radius:4px; border:1px solid #ccc; }
     .app-list { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; }
-    .app { background:white; border-radius:8px; padding:10px; width:150px; text-align:center; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+    .app { background:white; border-radius:8px; padding:10px; width:180px; text-align:center; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
     .app img { width:80px; height:80px; object-fit:cover; border-radius:10px; }
     .app a { text-decoration:none; color:#007bff; display:block; margin-top:5px; font-weight:bold; }
+    .app p { font-size: 12px; color: #555; margin-top: 5px; }
     #searchResults div { margin:5px 0; }
     #searchResults a { color:#007bff; text-decoration:none; font-weight:bold; }
     .pagination { text-align:center; margin:20px 0; }
@@ -77,7 +78,11 @@
         const div = document.createElement('div');
         div.className = 'app';
         div.setAttribute('data-category', app.category);
-        div.innerHTML = `<img src="icon${app.id}.png" alt="${app.name}"><a href="${app.url}" target="_blank">${app.name}</a>`;
+        div.innerHTML = `
+          <img src="icon${app.id}.png" alt="${app.name}">
+          <a href="${app.url}" target="_blank">${app.name}</a>
+          <p>${app.description}</p>
+        `;
         container.appendChild(div);
       });
       renderPagination();
