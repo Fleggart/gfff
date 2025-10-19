@@ -1,0 +1,30 @@
+[
+  {
+    "id": "1",
+    "name": "游戏1",
+    "category": "game",
+    "url": "https://example.com/app1",
+    "description": "一款好玩的游戏"
+  },
+  {
+    "id": "2",
+    "name": "工具1",
+    "category": "tool",
+    "url": "https://example.com/app2",
+    "description": "实用的工具软件"
+  },
+  {
+    "id": "3",
+    "name": "影音1",
+    "category": "media",
+    "url": "https://example.com/app3",
+    "description": "影音播放软件"
+  },
+  {
+    "id": "4",
+    "name": "游戏2",
+    "category": "game",
+    "url": "https://example.com/app4",
+    "description": "另一款有趣的游戏"
+  }
+]
