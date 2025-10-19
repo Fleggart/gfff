@@ -26,12 +26,5 @@
     "category": "tool",
     "url": "https://play.google.com/store/apps/details?id=com.hongthuanjsc.psd.viewer.file.thumbnail.reader.forphotoshop",
     "description": "PSD 照片查看器是用于Photoshop的简单文件查看器"
-  },
-  {
-    "id": "5",
-    "name": "blender on Androidr",
-    "category": "tool",
-    "url": "https://github.com/dshawshank/APP-android_arm64",
-    "description": "Blender Android"
   }
 ]
