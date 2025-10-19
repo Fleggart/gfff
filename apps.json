@@ -15,16 +15,23 @@
   },
   {
     "id": "3",
-    "name": "影音1",
-    "category": "media",
-    "url": "https://example.com/app3",
-    "description": "影音播放软件"
+    "name": "Clip Studio",
+    "category": "tool",
+    "url": "https://play.google.com/store/apps/details?id=jp.co.celsys.clipstudiopaint.googleplay",
+    "description": "绝佳功能的业界标准绘图应用。由于搭载在社群上造成话题的原创便利功能，让你能以更快乐的心情进行绘画!"
   },
   {
     "id": "4",
-    "name": "游戏2",
-    "category": "game",
-    "url": "https://example.com/app4",
-    "description": "另一款有趣的游戏"
+    "name": "PSD File Viewer",
+    "category": "tool",
+    "url": "https://play.google.com/store/apps/details?id=com.hongthuanjsc.psd.viewer.file.thumbnail.reader.forphotoshop",
+    "description": "PSD 照片查看器是用于Photoshop的简单文件查看器"
+  }
+  {
+    "id": "5",
+    "name": "blender on Androidr",
+    "category": "tool",
+    "url": "https://github.com/dshawshank/APP-android_arm64",
+    "description": "Blender Android"
   }
 ]
