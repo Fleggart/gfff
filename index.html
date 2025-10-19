@@ -17,6 +17,8 @@
     .app a { text-decoration:none; color:#007bff; display:block; margin-top:5px; font-weight:bold; }
     #searchResults div { margin:5px 0; }
     #searchResults a { color:#007bff; text-decoration:none; font-weight:bold; }
+    .pagination { text-align:center; margin:20px 0; }
+    .pagination button { margin:0 3px; padding:5px 8px; cursor:pointer; }
     @media(max-width:500px){ .app { width:45%; } }
   </style>
 </head>
@@ -38,65 +40,103 @@
   <!-- 软件列表 -->
   <div class="app-list" id="appList"></div>
 
-  <!-- 评论区 -->
-  <h2 style="text-align:center; margin-top:40px;">评论区</h2>
-  <div id="commento"></div>
-  <script defer src="https://cdn.commento.io/js/commento.js"></script>
+  <!-- 分页按钮 -->
+  <div class="pagination" id="pagination"></div>
 
   <script>
     let apps = [];
     let idx;
+    let filteredApps = [];
+    let currentPage = 1;
+    const pageSize = 6;
 
-    // 加载 JSON 数据
     fetch('apps.json')
       .then(res => res.json())
       .then(data => {
         apps = data;
-        buildAppList(apps);
-
-        // Lunr.js 索引
-        idx = lunr(function () {
-          this.ref('id');
-          this.field('name');
-          this.field('description');
-          apps.forEach(app => this.add(app));
-        });
+        filteredApps = apps;
+        buildIndex();
+        renderPage(currentPage);
       });
 
-    // 构建软件列表
-    function buildAppList(list){
+    function buildIndex(){
+      idx = lunr(function () {
+        this.ref('id');
+        this.field('name');
+        this.field('description');
+        apps.forEach(app => this.add(app));
+      });
+    }
+
+    function renderPage(page){
       const container = document.getElementById('appList');
       container.innerHTML = '';
-      list.forEach(app => {
+      const start = (page -1) * pageSize;
+      const end = start + pageSize;
+      filteredApps.slice(start,end).forEach(app => {
         const div = document.createElement('div');
         div.className = 'app';
         div.setAttribute('data-category', app.category);
         div.innerHTML = `<img src="icon${app.id}.png" alt="${app.name}"><a href="${app.url}" target="_blank">${app.name}</a>`;
         container.appendChild(div);
       });
+      renderPagination();
     }
 
-    // 分类筛选
+    function renderPagination(){
+      const container = document.getElementById('pagination');
+      container.innerHTML = '';
+      const totalPages = Math.ceil(filteredApps.length / pageSize);
+
+      if(totalPages <= 1) return;
+
+      // 上一页
+      const prev = document.createElement('button');
+      prev.innerText = '上一页';
+      prev.disabled = currentPage === 1;
+      prev.onclick = ()=>{ currentPage--; renderPage(currentPage); };
+      container.appendChild(prev);
+
+      // 页码
+      for(let i=1;i<=totalPages;i++){
+        const btn = document.createElement('button');
+        btn.innerText = i;
+        if(i === currentPage) btn.style.fontWeight='bold';
+        btn.onclick = ()=>{ currentPage=i; renderPage(currentPage); };
+        container.appendChild(btn);
+      }
+
+      // 下一页
+      const next = document.createElement('button');
+      next.innerText = '下一页';
+      next.disabled = currentPage === totalPages;
+      next.onclick = ()=>{ currentPage++; renderPage(currentPage); };
+      container.appendChild(next);
+    }
+
     function filterApps(category){
-      const filtered = category === 'all' ? apps : apps.filter(a => a.category === category);
-      buildAppList(filtered);
-      document.getElementById('searchResults').innerHTML = ''; // 清空搜索结果
-      document.getElementById('searchInput').value = '';
+      filteredApps = category === 'all' ? apps : apps.filter(a => a.category === category);
+      currentPage = 1;
+      document.getElementById('searchInput').value='';
+      document.getElementById('searchResults').innerHTML='';
+      renderPage(currentPage);
     }
 
-    // 搜索功能
     function searchApps(){
       const query = document.getElementById('searchInput').value;
       const resultsDiv = document.getElementById('searchResults');
-      resultsDiv.innerHTML = '';
-      if(!query) return;
+      resultsDiv.innerHTML='';
+      if(!query) {
+        filteredApps = apps;
+        currentPage=1;
+        renderPage(currentPage);
+        return;
+      }
       const results = idx.search(query);
-      results.forEach(result => {
-        const app = apps.find(a => a.id === result.ref);
-        const div = document.createElement('div');
-        div.innerHTML = `<a href="${app.url}" target="_blank">${app.name}</a> - ${app.description}`;
-        resultsDiv.appendChild(div);
-      });
+      filteredApps = results.map(r=>apps.find(a=>a.id===r.ref));
+      currentPage = 1;
+      renderPage(currentPage);
+      resultsDiv.innerHTML = `<p>搜索到 ${filteredApps.length} 个结果</p>`;
     }
   </script>
 </body>
