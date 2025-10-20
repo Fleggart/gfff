@@ -33,5 +33,12 @@
     "category": "tool",
     "url": "https://github.com/dshawshank/APP-android_arm64",
     "description": "Blender Android"
+  },
+  {
+    "id": "6",
+    "name": "OMate Chatr",
+    "category": "tool",
+    "url": "https://help.omate.org/#%E4%B8%8B%E8%BD%BD",
+    "description": "OMate是一款基于AI的聊天应用，旨在为用户提供个性化的聊天体验。"
   }
 ]
